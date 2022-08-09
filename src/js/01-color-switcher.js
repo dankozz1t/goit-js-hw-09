@@ -5,26 +5,26 @@ class ChangerColor {
     this.color = bodyEl;
 
     this.onChange = null;
-    this.btnStop.disabled = true;
+    this.#btnToggle(this.btnStop);
   }
 
   start() {
-    this.btnToggle(this.btnStart);
-    this.btnToggle(this.btnStop);
+    this.#btnToggle(this.btnStart);
+    this.#btnToggle(this.btnStop);
 
     this.onChange = setInterval(() => {
-      this.color.style.backgroundColor = this.getRandomHexColor();
+      this.color.style.backgroundColor = this.#getRandomHexColor();
     }, 1000);
   }
 
   stop() {
-    this.btnToggle(this.btnStop);
-    this.btnToggle(this.btnStart);
+    this.#btnToggle(this.btnStop);
+    this.#btnToggle(this.btnStart);
 
     clearInterval(this.onChange);
   }
 
-  getRandomHexColor() {
+  #getRandomHexColor() {
     let letters = '0123456789ABCDEF';
     let color = '#';
     for (let i = 0; i < 6; i++) {
@@ -33,7 +33,7 @@ class ChangerColor {
     return color;
   }
 
-  btnToggle(btn) {
+  #btnToggle(btn) {
     btn.disabled = !btn.disabled;
   }
 }
