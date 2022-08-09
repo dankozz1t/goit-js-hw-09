@@ -36,3 +36,25 @@ img {
 
   background-color: white;
 }
+
+.timer {
+  display: flex;
+
+  gap: 25px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.value {
+  font-size: 60px;
+  font-weight: 600;
+}
+
+.label {
+  font-size: 20px;
+  font-weight: 500;
+}
