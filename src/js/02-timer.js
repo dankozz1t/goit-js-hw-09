@@ -1,12 +1,14 @@
 const refs = {
-  btnStartEl: document.querySelector('button[data-start]'),
+  btnStart: document.querySelector('button[data-start]'),
+  btnStartBase: document.querySelector('button[data-startBase]'),
+  btnStopBase: document.querySelector('button[data-stopBase]'),
   spanDays: document.querySelector('span[data-days]'),
   spanHours: document.querySelector('span[data-hours]'),
   spanMinutes: document.querySelector('span[data-minutes]'),
   spanSeconds: document.querySelector('span[data-seconds]'),
 };
 class Timer {
-  constructor({ dateStart, updateUI }) {
+  constructor({ updateUI, dateStart = 0 }) {
     this.dateStart = dateStart;
     this.intervalId = null;
 
@@ -24,7 +26,7 @@ class Timer {
     this.intervalId = setInterval(() => {
       dateCurrent = Date.now();
 
-      let remainder = dateStart - dateCurrent;
+      let remainder = this.dateStart - dateCurrent;
 
       if (remainder <= 0) {
         this.stop();
@@ -32,6 +34,15 @@ class Timer {
       }
 
       this.update(remainder);
+    }, 1000);
+  }
+
+  start() { // BASE TIMER
+    const startTime = Date.now();
+
+    this.intervalId = setInterval(() => {
+      const curDate = Date.now();
+      this.update(curDate - startTime);
     }, 1000);
   }
 
@@ -66,7 +77,7 @@ class Timer {
 import flatpickr from 'flatpickr';
 import 'flatpickr/dist/flatpickr.min.css';
 
-refs.btnStartEl.disabled = true;
+refs.btnStart.disabled = true;
 
 flatpickr('#datetime-picker', {
   enableTime: true,
@@ -76,16 +87,16 @@ flatpickr('#datetime-picker', {
   onClose(selectedDates) {
     if (Date.parse(selectedDates[0]) < Date.now()) {
       window.alert('Please choose a date in the future');
-      refs.btnStartEl.disabled = true;
+      refs.btnStart.disabled = true;
       return;
     }
-    refs.btnStartEl.disabled = false;
+    refs.btnStart.disabled = false;
 
     const timer = new Timer({
-      dateStart: Date.parse(selectedDates[0]),
       updateUI: updateClockface,
+      dateStart: Date.parse(selectedDates[0]),
     });
-    refs.btnStartEl.addEventListener('click', timer.startCountdown.bind(timer));
+    refs.btnStart.addEventListener('click', timer.startCountdown.bind(timer));
   },
 });
 
@@ -96,3 +107,21 @@ function updateClockface({ days, hours, minutes, seconds }) {
   refs.spanMinutes.textContent = minutes;
   refs.spanSeconds.textContent = seconds;
 }
+
+// BASE TIMER
+const timer = new Timer({
+  updateUI: updateClockface,
+});
+refs.btnStopBase.disabled = true;
+
+refs.btnStartBase.addEventListener('click', () => {
+  timer.start();
+  refs.btnStartBase.disabled = true;
+  refs.btnStopBase.disabled = false;
+});
+
+refs.btnStopBase.addEventListener('click', () => {
+  timer.stop();
+  refs.btnStopBase.disabled = true;
+  refs.btnStartBase.disabled = false;
+});
