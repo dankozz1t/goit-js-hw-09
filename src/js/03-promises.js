@@ -12,8 +12,8 @@ refs.formEl.addEventListener('submit', onCreatePromisesClick);
 function onCreatePromisesClick(event) {
   event.preventDefault();
 
-  let delay = Number.parseInt(refs.firstDelayEl.value);
-  let step = Number.parseInt(refs.delayStepEl.value);
+  const delay = Number.parseInt(refs.firstDelayEl.value);
+  const step = Number.parseInt(refs.delayStepEl.value);
 
   for (let i = 0; i < refs.amountEl.value; i++) {
     createPromise(i + 1, delay + step * i)
