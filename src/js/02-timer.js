@@ -93,7 +93,7 @@ flatpickr('#datetime-picker', {
   defaultDate: new Date(),
   minuteIncrement: 1,
   onClose(selectedDates) {
-    if (Date.parse(selectedDates[0]) < this.defaultDate) {
+    if (Date.parse(selectedDates[0]) < Date.now()) {
       Notify.failure('Please choose a date in the future');
       refs.btnStart.disabled = true;
       return;
