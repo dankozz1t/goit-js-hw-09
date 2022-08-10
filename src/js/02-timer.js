@@ -1,4 +1,5 @@
 const refs = {
+  inputDate: document.querySelector('#datetime-picker'),
   btnStart: document.querySelector('button[data-start]'),
   btnReset: document.querySelector('button[data-reset]'),
   btnStartBase: document.querySelector('button[data-startBase]'),
@@ -107,12 +108,16 @@ flatpickr('#datetime-picker', {
     });
     refs.btnStart.addEventListener('click', () => {
       timer.startCountdown(timer);
+
+      refs.inputDate.disabled = true;
       btnToggle(refs.btnStart, refs.btnReset);
 
       refs.btnStartBase.disabled = true;
     });
     refs.btnReset.addEventListener('click', () => {
       timer.stop(timer);
+
+      refs.inputDate.disabled = false;
       btnToggle(refs.btnStart, refs.btnReset);
 
       refs.btnStartBase.disabled = false;
@@ -127,7 +132,6 @@ function onStop() {
 }
 
 function updateClockface({ days, hours, minutes, seconds }) {
-  console.log(`${days}:${hours}:${minutes}:${seconds}`);
   refs.spanDays.textContent = days;
   refs.spanHours.textContent = hours;
   refs.spanMinutes.textContent = minutes;
@@ -158,3 +162,5 @@ function btnToggle(...btns) {
     btn.disabled = !btn.disabled;
   }
 }
+
+//TODO: fix btnToggle (bugs more click)
